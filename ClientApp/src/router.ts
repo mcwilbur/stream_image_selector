@@ -26,5 +26,15 @@ export default new Router({
       name: 'fetch-data',
       component: () => import(/* webpackChunkName: "fetch-data" */ './views/FetchData.vue'),
     },
+    {
+      path: '/cards',
+      name: 'cards',
+      component: () => import('./views/Cards.vue'),
+    },
+    {
+      path: '/players',
+      name: 'players',
+      component: () => import('./views/Players.vue'),
+    },
   ],
 });

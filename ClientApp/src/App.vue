@@ -52,8 +52,8 @@ export default class App extends Vue {
   private title: string = 'ASP.NET Core Vue Starter';
   private items = [
     { title: 'Home', icon: 'home', link: '/' },
-    { title: 'Counter', icon: 'touch_app', link: '/counter' },
-    { title: 'Fetch data', icon: 'get_app', link: '/fetch-data' },
+    { title: 'Cards', icon: 'cards', link: '/cards' },
+    { title: 'Players', icon: 'account-multiple', link: '/players' },
   ];
 }
 </script>
