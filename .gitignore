@@ -30,6 +30,9 @@ Obj/
 .vs/
 /wwwroot/dist/
 
+# Visual Studio Code options directory
+.vscode
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -232,3 +235,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+#user files
+wwroot/images
+players
+activeImage
