@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col v-for="image in images" v-bind:key="image" >        
-          <img v-bind:src="'images/'+image" v-bind:class="{active: activeImage == image}" v-on:click="setActiveImage(image)" style="max-width:300px; border-radius:15px;"/>
+          <img v-bind:src="'cards/'+image" v-bind:class="{active: activeImage == image}" v-on:click="setActiveImage(image)" style="max-width:300px; border-radius:15px;"/>
       </v-col>
     </v-row>
   </v-container>
@@ -26,7 +26,7 @@ export default Vue.extend({
   methods: {
     async fetchImages() {
       try {
-        const response = await axios.get('api/Image');
+        const response = await axios.get('api/Cards');
         this.images = response.data;
       } catch (e) {
         this.showError = true;
@@ -36,11 +36,11 @@ export default Vue.extend({
     },
     async setActiveImage(image: string) {
       try {
-        const response = await axios.post('api/Image', {filename: image});
+        const response = await axios.post('api/Cards', {filename: image});
         this.activeImage = image;
       } catch (e) {
         this.showError = true;
-        this.errorMessage = `Error while setting active images ${e.message}.`;
+        this.errorMessage = `Error while setting active image ${e.message}.`;
       }
     },
     isActive(image: string) {

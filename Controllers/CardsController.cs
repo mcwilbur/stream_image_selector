@@ -3,21 +3,18 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AspNetCoreVueStarter.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace AspNetCoreVueStarter.Controllers
+namespace TCGStreamHelper.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImageController : ControllerBase
-    {
-        
+    public class CardsController : ControllerBase
+    {       
+        private readonly ILogger<CardsController> _logger;
 
-        private readonly ILogger<ImageController> _logger;
-
-        public ImageController(ILogger<ImageController> logger)
+        public CardsController(ILogger<CardsController> logger)
         {
             _logger = logger;
         }
@@ -26,7 +23,7 @@ namespace AspNetCoreVueStarter.Controllers
         public IEnumerable<string> Get()
         {
             List<string> files = new List<string>();
-            foreach (string file in Directory.GetFiles("wwwroot/images"))
+            foreach (string file in Directory.GetFiles("wwwroot/cards"))
             {
                 files.Add(Path.GetFileName(file));
             } 
@@ -38,14 +35,13 @@ namespace AspNetCoreVueStarter.Controllers
         {
             _logger.LogInformation(image.filename);
             Directory.EnumerateFiles("activeImage/").ToList().ForEach(f => System.IO.File.Delete(f));
-            string sourcePath = $"wwwroot/images/{image.filename}";
+            string sourcePath = $"wwwroot/cards/{image.filename}";
             string destinationPath = $"activeImage/current{Path.GetExtension(sourcePath)}";
             //set file active
             System.IO.File.Copy(sourcePath, destinationPath);
             return Ok();
         }
     }
-
     public class Image
     {
         public string filename {get; set;}

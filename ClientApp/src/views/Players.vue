@@ -18,7 +18,7 @@
           </v-container>
       </v-col>
     </v-row> 
-    <v-btn color="success" class="mr-4" fixed top right style="top: 80px">Update</v-btn>   
+    <v-btn color="success" class="mr-4" fixed top right style="top: 80px" v-on:click="setPlayers">Update</v-btn>   
   </v-container>  
 </template>
 
@@ -57,9 +57,9 @@ export default Vue.extend({
       }
       this.loading = false;
     },
-    async setPlayer() {
+    async setPlayers() {
       try {
-        const response = await axios.post('api/Image', {playerLeft : this.playerLeft, playerRight: this.playerRight});
+        const response = await axios.post('api/Players', {playerLeft : this.playerLeft, playerRight: this.playerRight});
         await this.fetchPlayers();
       } catch (e) {
         this.showError = true;

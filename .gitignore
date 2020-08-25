@@ -237,6 +237,6 @@ _Pvt_Extensions
 .fake/
 
 #user files
-wwroot/images
+wwroot/cards
 players
 activeImage

@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.SpaServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using VueCliMiddleware;
+using System.IO;
 
-namespace AspNetCoreVueStarter
+namespace TCGStreamHelper
 {
     public class Startup
     {
@@ -33,7 +35,7 @@ namespace AspNetCoreVueStarter
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
@@ -75,6 +77,24 @@ namespace AspNetCoreVueStarter
             {
                 spa.Options.SourcePath = "ClientApp";
             });
+
+            try{
+                if (!Directory.Exists("activeImage")) Directory.CreateDirectory("activeImage");
+                if (!Directory.Exists("wwwroot")) Directory.CreateDirectory("wwwroot");
+                if (!Directory.Exists("wwwroot/cards")) Directory.CreateDirectory("wwwroot/cards");
+                if (!Directory.Exists("players")) Directory.CreateDirectory("players");
+
+                if(!File.Exists("players/playerLeft_name.txt")) File.Create("players/playerLeft_name.txt").Close(); 
+                if(!File.Exists("players/playerLeft_deck.txt")) File.Create("players/playerLeft_deck.txt").Close();
+                if(!File.Exists("players/playerLeft_score.txt")) File.Create("players/playerLeft_score.txt").Close();
+                if(!File.Exists("players/playerRight_name.txt")) File.Create("players/playerRight_name.txt").Close();
+                if(!File.Exists("players/playerRight_deck.txt")) File.Create("players/playerRight_deck.txt").Close();
+                if(!File.Exists("players/playerRight_score.txt")) File.Create("players/playerRight_score.txt").Close();
+            }
+            catch(System.Exception e)
+            {
+                logger.LogError($"Folders or files could not be created at startup :\n {e}");
+            }
         }
     }
 }

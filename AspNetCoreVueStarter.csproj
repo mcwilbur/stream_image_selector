@@ -9,10 +9,10 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     <Authors>Software Ateliers</Authors>
     <Company>Software Ateliers</Company>
-    <Description>ASP.NET Core + Vue.js starter project</Description>
+    <Description>TCG Stream helper</Description>
     <Copyright>MIT 2020 Software Ateliers</Copyright>
-    <AssemblyName>AspNetCoreVueStarter</AssemblyName>
-    <RootNamespace>AspNetCoreVueStarter</RootNamespace>
+    <AssemblyName>TCGStreamHelper</AssemblyName>
+    <RootNamespace>TCGStreamHelper</RootNamespace>
     <Version>2.4.1</Version>
     <AssemblyVersion>2.4.1.0</AssemblyVersion>
     <FileVersion>2.4.1.0</FileVersion>
@@ -37,6 +37,12 @@
     <None Include="README.md" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="players" />
+    <Content Remove="activeImage" />
+    <Content Remove="wwwroot/cards/*" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
@@ -58,6 +64,7 @@
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
