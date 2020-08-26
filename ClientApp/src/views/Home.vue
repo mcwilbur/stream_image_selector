@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-layout column align-center>
+
   </v-container>
 </template>
 
