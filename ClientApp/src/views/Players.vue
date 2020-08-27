@@ -7,6 +7,7 @@
           <v-row><v-col><v-text-field label="Player name" v-model="playerLeft.name"/></v-col></v-row>
           <v-row><v-col><v-text-field label="Deck" v-model="playerLeft.deck"/></v-col></v-row>
           <v-row><v-col><v-text-field label="Score" v-model="playerLeft.score"/></v-col></v-row>
+          <v-row><v-col><v-text-field label="Life Points" v-model="playerLeft.lifePoints"/></v-col></v-row>
           </v-container>
       </v-col>
       <v-col sm="6" xs="12" cols="12">
@@ -15,6 +16,7 @@
           <v-row><v-col><v-text-field label="Player name" v-model="playerRight.name"/></v-col></v-row>
           <v-row><v-col><v-text-field label="Deck" v-model="playerRight.deck"/></v-col></v-row>
           <v-row><v-col><v-text-field label="Score" v-model="playerRight.score"/></v-col></v-row>
+          <v-row><v-col><v-text-field label="Life Points" v-model="playerRight.lifePoints"/></v-col></v-row>
           </v-container>
       </v-col>
     </v-row> 
@@ -37,11 +39,13 @@ export default Vue.extend({
         name: '',
         deck: '',
         score: '',
+        lifePoints: '',
       },
       playerRight: {
         name: '',
         deck: '',
         score: '',
+        lifePoints: '',
       },
     };
   },
@@ -75,7 +79,7 @@ export default Vue.extend({
 <style scoped>
   .active{
     border-color:  rgba(82,168,236,.8);
-    box-shadow: 0 0px 0px rgba(82,168,236,.8) inset, 0 0 8px rgba(82,168,236,.8);
+    box-shadow: 0 0px 0px rgba(82,168,236,.8) inset, 0 0 12px rgba(82,168,236,.8);
     outline: 0 none;
   }
 </style>

@@ -26,9 +26,12 @@ namespace TCGStreamHelper.Controllers
             players.playerLeft.name = System.IO.File.ReadAllText("players/playerLeft_name.txt"); 
             players.playerLeft.deck = System.IO.File.ReadAllText("players/playerLeft_deck.txt"); 
             players.playerLeft.score = System.IO.File.ReadAllText("players/playerLeft_score.txt"); 
+            players.playerLeft.lifePoints = System.IO.File.ReadAllText("players/playerLeft_lpoints.txt"); 
             players.playerRight.name = System.IO.File.ReadAllText("players/playerRight_name.txt"); 
             players.playerRight.deck = System.IO.File.ReadAllText("players/playerRight_deck.txt"); 
             players.playerRight.score = System.IO.File.ReadAllText("players/playerRight_score.txt"); 
+            players.playerRight.lifePoints = System.IO.File.ReadAllText("players/playerRight_lpoints.txt"); 
+            
             return players;          
         }
 
@@ -38,9 +41,11 @@ namespace TCGStreamHelper.Controllers
             System.IO.File.WriteAllText("players/playerLeft_name.txt", players.playerLeft.name); 
             System.IO.File.WriteAllText("players/playerLeft_deck.txt", players.playerLeft.deck); 
             System.IO.File.WriteAllText("players/playerLeft_score.txt", players.playerLeft.score); 
+            System.IO.File.WriteAllText("players/playerLeft_lpoints.txt", players.playerLeft.lifePoints); 
             System.IO.File.WriteAllText("players/playerRight_name.txt", players.playerRight.name); 
             System.IO.File.WriteAllText("players/playerRight_deck.txt", players.playerRight.deck); 
             System.IO.File.WriteAllText("players/playerRight_score.txt", players.playerRight.score); 
+            System.IO.File.WriteAllText("players/playerRight_lpoints.txt", players.playerRight.lifePoints); 
 
             return Ok();
         }
@@ -51,6 +56,7 @@ namespace TCGStreamHelper.Controllers
         public string name {get; set; }
         public string deck {get; set; }
         public string score {get; set; }
+        public string lifePoints {get; set;}
     }
 
     public class Players

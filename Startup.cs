@@ -87,9 +87,12 @@ namespace TCGStreamHelper
                 if(!File.Exists("players/playerLeft_name.txt")) File.Create("players/playerLeft_name.txt").Close(); 
                 if(!File.Exists("players/playerLeft_deck.txt")) File.Create("players/playerLeft_deck.txt").Close();
                 if(!File.Exists("players/playerLeft_score.txt")) File.Create("players/playerLeft_score.txt").Close();
+                if(!File.Exists("players/playerLeft_lpoints.txt")) File.Create("players/playerLeft_lpoints.txt").Close();
                 if(!File.Exists("players/playerRight_name.txt")) File.Create("players/playerRight_name.txt").Close();
                 if(!File.Exists("players/playerRight_deck.txt")) File.Create("players/playerRight_deck.txt").Close();
                 if(!File.Exists("players/playerRight_score.txt")) File.Create("players/playerRight_score.txt").Close();
+                if(!File.Exists("players/playerRight_lpoints.txt")) File.Create("players/playerRight_lpoints.txt").Close();
+
             }
             catch(System.Exception e)
             {
