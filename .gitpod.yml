@@ -1,0 +1,6 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: dotnet restore & cd ./ClientApp & npm install
+    command: dotnet run

@@ -9,9 +9,7 @@ namespace TCGStreamHelper
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args)
-            .UseUrls(
-                "http://*:5000", 
-                "https://*:5001")
+            .UseUrls("http://0.0.0.0:5000")
             .Build().Run();
         }
 

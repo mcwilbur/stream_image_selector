@@ -1,4 +1,6 @@
-﻿# ASP.NET Core Vue Starter
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/mcwilbur/stream_image_selector)
+
+# ASP.NET Core Vue Starter
 
 The repository contains an ASP.&#8203;NET Core + Vue.js starter template. The template runs on ASP.NET Core 3.1 and is created by Vue CLI 4.0 with a new plugin based architecture allowing developers to interactively scaffold a new project with just a one command.
 

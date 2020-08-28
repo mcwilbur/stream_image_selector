@@ -44,9 +44,6 @@ namespace TCGStreamHelper
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-                app.UseHttpsRedirection();
             }
 
             app.UseStaticFiles();
@@ -96,7 +93,7 @@ namespace TCGStreamHelper
             }
             catch(System.Exception e)
             {
-                logger.LogError($"Folders or files could not be created at startup :\n {e}");
+                logger.LogError($"Folders or files could not be created at startup :\n{e}");
             }
         }
     }
