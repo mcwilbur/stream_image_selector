@@ -3,4 +3,4 @@ image:
 
 tasks:
   - init: dotnet restore & cd ./ClientApp & npm install
-    command: dotnet run
+    command: export ASPNETCORE_ENVIRONMENT=Development & dotnet run
