@@ -34,9 +34,9 @@ namespace TCGStreamHelper.Controllers
         public ActionResult Post(Image image)
         {
             _logger.LogInformation(image.filename);
-            Directory.EnumerateFiles("activeImage/").ToList().ForEach(f => System.IO.File.Delete(f));
+            Directory.EnumerateFiles("activeImage/").ToList().Where(f => f.Contains($"current{image.index}")).ToList().ForEach(f => System.IO.File.Delete(f));
             string sourcePath = $"wwwroot/cards/{image.filename}";
-            string destinationPath = $"activeImage/current{Path.GetExtension(sourcePath)}";
+            string destinationPath = $"activeImage/current{image.index}{Path.GetExtension(sourcePath)}";
             //set file active
             System.IO.File.Copy(sourcePath, destinationPath);
             return Ok();
@@ -45,5 +45,6 @@ namespace TCGStreamHelper.Controllers
     public class Image
     {
         public string filename {get; set;}
+        public int index {get; set;}
     }
 }

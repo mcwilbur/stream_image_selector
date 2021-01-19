@@ -1,8 +1,14 @@
 <template>
   <v-container fluid>
     <v-row>
+      <input type="radio" id="1" value="1" v-model.number="index">
+      <label for="yes">Carte 1</label>
+      <br>
+      <input type="radio" id="2" value="2" v-model.number="index">
+      <label for="no">Carte 2</label></v-row>
+    <v-row>
       <v-col v-for="image in images" v-bind:key="image" >        
-          <img v-bind:src="'cards/'+image" v-bind:class="{active: activeImage == image}" v-on:click="setActiveImage(image)" style="max-width:300px; border-radius:15px;"/>
+          <img v-bind:src="'cards/'+image" v-bind:class="{active1: activeImage1 == image, active2: activeImage2 == image, active_both : active_both == image}" v-on:click="setActiveImage(image)" style="max-width:300px; border-radius:15px;"/>
       </v-col>
     </v-row>
   </v-container>
@@ -20,7 +26,9 @@ export default Vue.extend({
       showError: false,
       errorMessage: 'Error while loading images.',
       images: [],
-      activeImage: '',
+      activeImage1: '',
+      activeImage2: '',
+      index: 1 as number,
     };
   },
   methods: {
@@ -36,15 +44,26 @@ export default Vue.extend({
     },
     async setActiveImage(image: string) {
       try {
-        const response = await axios.post('api/Cards', {filename: image});
-        this.activeImage = image;
+        const response = await axios.post('api/Cards', {filename: image, index: this.index});
+        if(this.index == 1) {
+          this.activeImage1 = image;
+        }
+        else {
+          this.activeImage2 = image;
+        }
       } catch (e) {
         this.showError = true;
         this.errorMessage = `Error while setting active image ${e.message}.`;
       }
     },
-    isActive(image: string) {
-      return (this.activeImage === image) ? true : false ;
+    isActive1(image: string) {
+      return (this.activeImage1 === image && this.activeImage2 === image) ? true : false ;
+    },
+    isActive2(image: string) {
+      return (this.activeImage2 === image && this.activeImage1 === image) ? true : false ;
+    },
+      isActive_both(image: string) {
+      return (this.activeImage2 === image && this.activeImage1 === image) ? true : false ;
     },
   },
   async created() {
@@ -53,9 +72,19 @@ export default Vue.extend({
 });
 </script>
 <style scoped>
-  .active{
+  .active1{
     border-color:  rgba(82,168,236,.8);
-    box-shadow: 0 0px 0px rgba(82,168,236,.8) inset, 0 0 8px rgba(82,168,236,.8);
+    box-shadow: 0px 0px 8px 8px rgba(82,168,236,.8);
+    outline: 0 none;
+  }
+  .active2{
+    border-color:  rgba(236, 82, 82, 0.8);
+    box-shadow:  0px 0px 8px 8px rgba(236, 82, 82, 0.8);
+    outline: 0 none;
+  }
+  .active_both{
+    border-color:  rgba(167, 82, 236, 0.8);
+    box-shadow:  0px 0px 8px 8pxrgba(167, 82, 236, 0.8);
     outline: 0 none;
   }
 </style>
