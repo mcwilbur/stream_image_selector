@@ -1,14 +1,9 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/mcwilbur/stream_image_selector)
 
-# ASP.NET Core Vue Starter
+# TCG Stream Helper
 
-The repository contains an ASP.&#8203;NET Core + Vue.js starter template. The template runs on ASP.NET Core 3.1 and is created by Vue CLI 4.0 with a new plugin based architecture allowing developers to interactively scaffold a new project with just a one command.
+This app provides a tool for TCG events streamers to manage player info and images from a web interface. The user can either setup sources pointing to local files, or embed web sources (work in progress). 
 
-Original article how to create the starter template is available [here](https://medium.com/software-ateliers/asp-net-core-vue-template-with-custom-configuration-using-cli-3-0-8288e18ae80b).
-
-[![Nuget](https://img.shields.io/nuget/v/SoftwareAteliers.AspNetCoreVueStarter.svg?style=flat&color=2196f3)](https://www.nuget.org/packages/SoftwareAteliers.AspNetCoreVueStarter/)
-
-> For ASP.NET Core 2.2 template use [release v1.1.0](https://github.com/SoftwareAteliers/asp-net-core-vue-starter/releases/tag/1.1.0)
 
 ---
 
@@ -109,6 +104,10 @@ or
 
 * Follow the Publish wizard in Visual Studio selecting Folder profile.
 
+### 2. Single file output
+
+* Run the .NET publish command using self contained single file configuration `dotnet publish -r win-x64 -c Release /p:PublishSingleFile=true`
+
 ### 2. Docker output
 
 * Run the following command in a cmd window to build the docker image:
@@ -126,35 +125,3 @@ or
 
 * Get Chrome DevTools for Vue.js [here](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
 
----
-
-## Issues and Contribution
-
-Want to file a bug, contribute some code, or improve documentation? Excellent! Please make sure to check existing issues before opening a new one.
-
----
-
-## Contributors
-
-Special thanks to everyone who helped and contributed to this project!
-
-* [@jdebarochez](https://github.com/jdebarochez)
-* [@arisliang](https://github.com/arisliang)
-* [@dotnetshadow](https://github.com/dotnetshadow)
-* [@NickStees](https://github.com/NickStees)
-* [@wallyjue](https://github.com/wallyjue)
-* [@Ibrahim-Islam](https://github.com/Ibrahim-Islam)
-* [@bickycheese](https://github.com/bickycheese)
-* [@nickyg91](https://github.com/nickyg91)
-
----
-
-## License
-
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://mit-license.org/)
-
-Copyright &copy; 2018 - 2020 [Software Ateliers](https://github.com/SoftwareAteliers)
-
-## Where to find me
-
-Medium: [Software Ateliers](https://medium.com/software-ateliers) | Twitter: [@SAteliers](https://twitter.com/SAteliers)
