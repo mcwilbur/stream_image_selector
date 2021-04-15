@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TCGStreamHelper.Models;
+using TCGStreamHelper.Services;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace TCGStreamHelper.Controllers
 {
@@ -13,38 +16,75 @@ namespace TCGStreamHelper.Controllers
     public class CardsController : ControllerBase
     {       
         private readonly ILogger<CardsController> _logger;
+        private readonly LiveDataService _liveDataService;
 
-        public CardsController(ILogger<CardsController> logger)
+        public CardsController(ILogger<CardsController> logger, LiveDataService liveDataService)
         {
             _logger = logger;
+            _liveDataService = liveDataService;
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<ImageSetVM> Get()
         {
-            List<string> files = new List<string>();
-            foreach (string file in Directory.GetFiles("wwwroot/cards"))
+            List<ImageSetVM> imageSets = new List<ImageSetVM>();
+
+            //base directory
+            ImageSetVM imageSet = new ImageSetVM()
             {
-                files.Add(Path.GetFileName(file));
+                name = "Root",
+                images = new List<string>()
+            };
+
+            foreach (string file in Directory.GetFiles($"wwwroot{Path.DirectorySeparatorChar}cards"))
+            {
+               imageSet.images.Add($"cards{Path.DirectorySeparatorChar}{Path.GetFileName(file)}");
             } 
-            return files;          
+
+            imageSets.Add(imageSet);               
+
+            //subdirectories
+            foreach(string directory in Directory.GetDirectories($"wwwroot{Path.DirectorySeparatorChar}cards"))
+            {
+                string directoryName = Path.GetFileName(directory);
+                imageSet = new ImageSetVM()
+                {
+                    name = directoryName,
+                    images = new List<string>()
+                };
+                
+                foreach (string file in Directory.GetFiles(directory))
+                {
+                    imageSet.images.Add($"cards{Path.DirectorySeparatorChar}{directoryName}{Path.DirectorySeparatorChar}{Path.GetFileName(file)}");
+                } 
+
+                imageSets.Add(imageSet);
+            }
+            
+            return imageSets;          
+        }
+
+        [HttpGet]
+        [Route("active")]
+        public List<ImageVM> GetActive()
+        {
+            return _liveDataService.GetImages();
         }
 
         [HttpPost]
-        public ActionResult Post(Image image)
+        public ActionResult Post(ImageVM image)
         {
+            _liveDataService.SetImage(image);
             _logger.LogInformation(image.filename);
-            Directory.EnumerateFiles("activeImage/").ToList().Where(f => f.Contains($"current{image.index}")).ToList().ForEach(f => System.IO.File.Delete(f));
-            string sourcePath = $"wwwroot/cards/{image.filename}";
-            string destinationPath = $"activeImage/current{image.index}{Path.GetExtension(sourcePath)}";
+            Directory.EnumerateFiles($"activeImage{Path.DirectorySeparatorChar}").ToList().Where(f => f.Contains($"current{image.index}")).ToList().ForEach(f => System.IO.File.Delete(f));
+            string sourcePath = $"wwwroot{Path.DirectorySeparatorChar}{image.filename}";
+            string destinationPath = $"activeImage{Path.DirectorySeparatorChar}current{image.index}{Path.GetExtension(sourcePath)}";
             //set file active
+            System.Threading.Thread.Sleep(200);
             System.IO.File.Copy(sourcePath, destinationPath);
             return Ok();
         }
-    }
-    public class Image
-    {
-        public string filename {get; set;}
-        public int index {get; set;}
+
+
     }
 }

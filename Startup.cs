@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using VueCliMiddleware;
 using System.IO;
+using TCGStreamHelper.Services;
 
 namespace TCGStreamHelper
 {
@@ -32,6 +33,9 @@ namespace TCGStreamHelper
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddSingleton(new LiveDataService());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

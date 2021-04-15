@@ -1,0 +1,50 @@
+<head>
+     @if((int)ViewData["height"] > 0 && (int)ViewData["width"] > 0)
+        {
+            <style>
+                .frame {
+                    height: @ViewData["height"]px; 
+                    width: @ViewData["width"]px;
+                    position: relative;
+                }
+            </style>
+        }
+        <style>
+            img {
+                max-height: 100%;
+                max-width: 100%;
+                width: auto;
+                height: auto;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+            }
+        </style>
+</head>
+<body>    
+ <div class="frame">          
+    <img id="myImg" src="" ></img>
+</div>   
+    <script type="text/javascript">
+
+        var source = new EventSource("/api/sse/card/@ViewData["index"]");
+
+        source.onmessage = function (event) {
+            console.log('onmessage: ' + event.data);
+            document.getElementById("myImg").src = "/"+event.data;
+        };
+
+        source.onopen = function(event) {
+            console.log('onopen');
+        };
+
+        source.onerror = function(event) {
+            console.log('onerror');
+        }
+
+    </script>
+</body>
+

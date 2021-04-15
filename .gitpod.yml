@@ -1,6 +1,0 @@
-image:
-  file: .gitpod.Dockerfile
-
-tasks:
-  - init: dotnet restore & cd ./ClientApp & npm install
-    command: export ASPNETCORE_ENVIRONMENT=Development & dotnet run

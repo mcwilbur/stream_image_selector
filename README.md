@@ -42,7 +42,7 @@ This app provides a tool for TCG events streamers to manage player info and imag
 
 ## Prerequisites
 
-* [.NET Core](https://www.microsoft.com/net/download/windows) >= 3.1
+* [.NET 5.0](https://www.microsoft.com/net/download/windows) >= 5.0
 * [NodeJS](https://nodejs.org/) >= 8.9
 * [Vue CLI](https://cli.vuejs.org/) >= 4.0
 * Your favourite editor (I prefer [VS Code](https://code.visualstudio.com/)), or VS 2017/19
@@ -106,7 +106,7 @@ or
 
 ### 2. Single file output
 
-* Run the .NET publish command using self contained single file configuration `dotnet publish -r win-x64 -c Release /p:PublishSingleFile=true`
+* Run the .NET publish command using self contained single file configuration `dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true`
 
 ### 2. Docker output
 

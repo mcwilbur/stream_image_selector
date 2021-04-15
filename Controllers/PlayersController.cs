@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TCGStreamHelper.Models;
+using TCGStreamHelper.Services;
 
 namespace TCGStreamHelper.Controllers
 {
@@ -13,55 +15,34 @@ namespace TCGStreamHelper.Controllers
     public class PlayersController : ControllerBase
     {     
         private readonly ILogger<PlayersController> _logger;
+        private readonly LiveDataService _liveDataService;
 
-        public PlayersController(ILogger<PlayersController> logger)
+        public PlayersController(ILogger<PlayersController> logger, LiveDataService liveDataService)
         {
             _logger = logger;
+            _liveDataService = liveDataService;
         }
 
         [HttpGet]
         public Players Get()
         {
-            Players players = new Players(){playerLeft = new Player(), playerRight = new Player()};
-            players.playerLeft.name = System.IO.File.ReadAllText("players/playerLeft_name.txt"); 
-            players.playerLeft.deck = System.IO.File.ReadAllText("players/playerLeft_deck.txt"); 
-            players.playerLeft.score = System.IO.File.ReadAllText("players/playerLeft_score.txt"); 
-            players.playerLeft.lifePoints = System.IO.File.ReadAllText("players/playerLeft_lpoints.txt"); 
-            players.playerRight.name = System.IO.File.ReadAllText("players/playerRight_name.txt"); 
-            players.playerRight.deck = System.IO.File.ReadAllText("players/playerRight_deck.txt"); 
-            players.playerRight.score = System.IO.File.ReadAllText("players/playerRight_score.txt"); 
-            players.playerRight.lifePoints = System.IO.File.ReadAllText("players/playerRight_lpoints.txt"); 
-            
+            Players players = _liveDataService.GetPlayers();
             return players;          
         }
 
         [HttpPost]
         public ActionResult Post(Players players)
         {
-            System.IO.File.WriteAllText("players/playerLeft_name.txt", players.playerLeft.name); 
-            System.IO.File.WriteAllText("players/playerLeft_deck.txt", players.playerLeft.deck); 
-            System.IO.File.WriteAllText("players/playerLeft_score.txt", players.playerLeft.score); 
-            System.IO.File.WriteAllText("players/playerLeft_lpoints.txt", players.playerLeft.lifePoints); 
-            System.IO.File.WriteAllText("players/playerRight_name.txt", players.playerRight.name); 
-            System.IO.File.WriteAllText("players/playerRight_deck.txt", players.playerRight.deck); 
-            System.IO.File.WriteAllText("players/playerRight_score.txt", players.playerRight.score); 
-            System.IO.File.WriteAllText("players/playerRight_lpoints.txt", players.playerRight.lifePoints); 
+            System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerLeft_name.txt", players.playerLeft.name); 
+            System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerLeft_deck.txt", players.playerLeft.deck); 
+            System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerLeft_score.txt", players.playerLeft.score); 
+            System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerLeft_lpoints.txt", players.playerLeft.lifePoints); 
+            System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerRight_name.txt", players.playerRight.name); 
+            System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerRight_deck.txt", players.playerRight.deck); 
+            System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerRight_score.txt", players.playerRight.score); 
+            System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerRight_lpoints.txt", players.playerRight.lifePoints); 
 
             return Ok();
         }
-    }
-
-    public class Player
-    {
-        public string name {get; set; }
-        public string deck {get; set; }
-        public string score {get; set; }
-        public string lifePoints {get; set;}
-    }
-
-    public class Players
-    {
-        public Player playerLeft {get; set; }
-        public Player playerRight {get; set; }
     }
 }
