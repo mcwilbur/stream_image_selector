@@ -27,5 +27,16 @@ namespace TCGStreamHelper.Controllers
             ViewData.Add("height", height);            
             return View($"Pages{Path.DirectorySeparatorChar}LiveImage.cshtml");
         }
+
+        [HttpGet]
+        [Route("player/{index}")]
+        public IActionResult GetLivePlayer(int index, int width, int height, string color)
+        {            
+            ViewData.Add("index", index);            
+            ViewData.Add("width", width);            
+            ViewData.Add("height", height);            
+            ViewData.Add("color", color);            
+            return View($"Pages{Path.DirectorySeparatorChar}LivePlayer.cshtml");
+        }
     }
 }

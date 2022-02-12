@@ -1,0 +1,44 @@
+<head>
+    <link href="https://allfont.net/allfont.css?fonts=agency-fb" rel="stylesheet" type="text/css" />
+    <style>
+        .frame {
+            height: @((int)ViewData["height"] > 0 ? string.Concat(@ViewData["height"], "px") : Html.Raw("100%"));
+            width: @((int)ViewData["width"] > 0 ? string.Concat(@ViewData["width"], "px") : Html.Raw("100%"));
+            position: relative;
+            font-family: 'Agency FB';
+            color: @((ViewData["color"] != null && (string)ViewData["color"] != "") ? @ViewData["color"] : "black");
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="frame">
+        <div id="name"></div>
+        <div id="deck"></div>
+        <div id="score"></div>
+        <div id="lifepoints"></div>
+    </div>
+    <script type="text/javascript">
+
+        var source = new EventSource("/api/sse/player/@ViewData["index"]");
+
+        source.onmessage = function (event) {
+            var data = JSON.parse(event.data);
+            console.log('onmessage: ' + event.data);
+            document.getElementById("name").innerHTML = data.name;
+            document.getElementById("deck").innerHTML = data.deck;
+            document.getElementById("score").innerHTML = data.score;
+            document.getElementById("lifepoints").innerHTML = data.lifePoints;
+        };
+
+        source.onopen = function (event) {
+            console.log('onopen');
+        };
+
+        source.onerror = function (event) {
+            console.log('onerror');
+        }
+
+    </script>
+</body>

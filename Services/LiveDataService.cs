@@ -6,7 +6,7 @@ namespace TCGStreamHelper.Services
 {
     public class LiveDataService
     {
-        private Players _players;
+        private ActivePlayers _players;
         private List<ImageVM> _images;
         private DateTime _lastPlayerChange;
         private DateTime _lastImageChange;
@@ -14,7 +14,7 @@ namespace TCGStreamHelper.Services
         public LiveDataService()
         {
             _images = new List<ImageVM>();
-            _players = new Players(){playerLeft = new PlayerVM(), playerRight = new PlayerVM()};
+            _players = new ActivePlayers(){playerLeft = new PlayerVM(), playerRight = new PlayerVM()};
             _players.playerLeft.name = System.IO.File.ReadAllText("players/playerLeft_name.txt"); 
             _players.playerLeft.deck = System.IO.File.ReadAllText("players/playerLeft_deck.txt"); 
             _players.playerLeft.score = System.IO.File.ReadAllText("players/playerLeft_score.txt"); 
@@ -25,7 +25,7 @@ namespace TCGStreamHelper.Services
             _players.playerRight.lifePoints = System.IO.File.ReadAllText("players/playerRight_lpoints.txt"); 
         }
 
-        public void SetPlayers(Players players)
+        public void SetPlayers(ActivePlayers players)
         {
             _players = players;
             _lastPlayerChange = DateTime.Now;
@@ -39,7 +39,7 @@ namespace TCGStreamHelper.Services
             System.IO.File.WriteAllText("players/playerRight_lpoints.txt", _players.playerRight.lifePoints); 
         }
 
-        public Players GetPlayers()
+        public ActivePlayers GetPlayers()
         {
             return _players;
         }

@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <h2>Active images</h2>
+    <div class="d-flex flex-row">
+    <h2 style="margin-right:10px;">Active images</h2>
+    <v-btn @click="addActiveImage()" style="width:36px;min-width:36px;"><v-icon>mdi-plus-circle-outline</v-icon></v-btn>
+    </div>
     <v-row>
       <v-card
         v-for="n in activeImages.length"
@@ -14,6 +17,7 @@
             v-on:click="setIndex(n)"
           ></v-img>
         </div>
+        <v-card-text>[{{n}}] : {{activeImages[n-1] === "empty.png" ? "&lt;empty&gt;" : getImageName(activeImages[n-1])}}</v-card-text>
         <v-card-actions>
           <v-btn style="width: 100%" @click="getLiveUrl(n)">
             <v-icon>mdi-content-copy</v-icon
@@ -56,10 +60,10 @@
 
 <script lang="ts">
 // an example of a Vue Typescript component using Vue.extend
-import Vue from "vue";
-import axios from "axios";
+import Vue from 'vue';
+import axios from 'axios';
 
-interface image {filename: string, index: number}
+interface image {filename: string; index: number; }
 
 export default Vue.extend({
   data() {
@@ -67,16 +71,16 @@ export default Vue.extend({
       tab: null,
       loading: true,
       showError: false,
-      errorMessage: "",
+      errorMessage: '',
       imageSets: [],
-      activeImages: ["empty.png"],
+      activeImages: ['empty.png'],
       index: 1 as number,
     };
   },
   methods: {
     async fetchImages() {
       try {
-        const response = await axios.get("api/Cards");
+        const response = await axios.get('api/Cards');
         this.imageSets = response.data;
       } catch (e) {
         this.showError = true;
@@ -86,15 +90,13 @@ export default Vue.extend({
     },
     async fetchActiveImages() {
       try {
-        const response = await axios.get<image[]>("api/cards/active");
-        response.data.forEach(element => {
-          this.activeImages[element.index -1] = element.filename;
+        const response = await axios.get<image[]>('api/cards/active');
+        response.data.forEach((element) => {
+          this.activeImages[element.index - 1] = element.filename;
         });
-        for (var i = 0; i < this.activeImages.length; i++)
-        {
-          if (this.activeImages[i] === undefined) 
-          {
-            this.activeImages[i] = "empty.png";
+        for (let i = 0; i < this.activeImages.length; i++) {
+          if (this.activeImages[i] === undefined) {
+            this.activeImages[i] = 'empty.png';
           }
         }
       } catch (e) {
@@ -105,7 +107,7 @@ export default Vue.extend({
     },
     async setActiveImage(image: string) {
       try {
-        const response = await axios.post("api/Cards", {
+        const response = await axios.post('api/Cards', {
           filename: image,
           index: this.index,
         });
@@ -126,26 +128,26 @@ export default Vue.extend({
       this.index = n;
     },
     addActiveImage() {
-      this.activeImages.push("empty.png");
+      this.activeImages.push('empty.png');
     },
     getImageName(image: string) {
-      let pattern = new RegExp(/^.*\/(.*)\..*$/);
+      const pattern = new RegExp(/^.*\/(.*)\..*$/);
       const match = pattern.exec(image);
-      return match === null ? "" : match[1];
+      return match === null ? '' : match[1];
     },
     getLiveUrl(n: number) {
-      var port: string = "";
-      if (location.port != "80" && location.port != "443") {
+      let port: string = '';
+      if (location.port != '80' && location.port != '443') {
         port = `:${location.port}`;
       }
       navigator.clipboard.writeText(
-        `${window.location.hostname}${port}/live/image/${n}`
+        `${window.location.hostname}${port}/live/image/${n}`,
       );
     },
   },
   async created() {
-    this.fetchImages();
-    this.fetchActiveImages();
+    await this.fetchImages();
+    await this.fetchActiveImages();
   },
 });
 </script>

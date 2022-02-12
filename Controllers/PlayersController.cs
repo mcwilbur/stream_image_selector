@@ -24,14 +24,14 @@ namespace TCGStreamHelper.Controllers
         }
 
         [HttpGet]
-        public Players Get()
+        public ActivePlayers Get()
         {
-            Players players = _liveDataService.GetPlayers();
+            ActivePlayers players = _liveDataService.GetPlayers();
             return players;          
         }
 
         [HttpPost]
-        public ActionResult Post(Players players)
+        public ActionResult Post(ActivePlayers players)
         {
             System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerLeft_name.txt", players.playerLeft.name); 
             System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerLeft_deck.txt", players.playerLeft.deck); 
@@ -41,6 +41,8 @@ namespace TCGStreamHelper.Controllers
             System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerRight_deck.txt", players.playerRight.deck); 
             System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerRight_score.txt", players.playerRight.score); 
             System.IO.File.WriteAllText($"players{Path.DirectorySeparatorChar}playerRight_lpoints.txt", players.playerRight.lifePoints); 
+
+            _liveDataService.SetPlayers(players);
 
             return Ok();
         }

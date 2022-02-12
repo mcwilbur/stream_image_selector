@@ -9,7 +9,7 @@ namespace TCGStreamHelper.Models
         public string lifePoints {get; set; }
     }
 
-    public class Players
+    public class ActivePlayers
     {
         public PlayerVM playerLeft {get; set; }
         public PlayerVM playerRight {get; set; }
