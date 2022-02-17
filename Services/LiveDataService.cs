@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using TCGStreamHelper.Models;
 using System;
+using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace TCGStreamHelper.Services 
 {
@@ -15,6 +17,19 @@ namespace TCGStreamHelper.Services
         {
             _images = new List<ImageVM>();
             _players = new ActivePlayers(){playerLeft = new PlayerVM(), playerRight = new PlayerVM()};
+            _players.playerLeft.name = "";
+            _players.playerLeft.deck = "";            
+            _players.playerLeft.score = "";
+            _players.playerLeft.lifePoints = "";
+            _players.playerRight.name = "";
+            _players.playerRight.deck = "";
+            _players.playerRight.score = "";
+            _players.playerRight.lifePoints = "";
+        }
+
+        public void InitService()
+        {
+            CreateLocalFiles();
             _players.playerLeft.name = System.IO.File.ReadAllText("players/playerLeft_name.txt"); 
             _players.playerLeft.deck = System.IO.File.ReadAllText("players/playerLeft_deck.txt"); 
             _players.playerLeft.score = System.IO.File.ReadAllText("players/playerLeft_score.txt"); 
@@ -63,6 +78,23 @@ namespace TCGStreamHelper.Services
         public DateTime GetLastImageChange()
         {
             return _lastImageChange;
+        }
+
+        private void CreateLocalFiles()
+        {
+            if (!Directory.Exists("activeImage")) Directory.CreateDirectory("activeImage");
+            if (!Directory.Exists("wwwroot")) Directory.CreateDirectory("wwwroot");
+            if (!Directory.Exists("wwwroot/cards")) Directory.CreateDirectory("wwwroot/cards");
+            if (!Directory.Exists("players")) Directory.CreateDirectory("players");
+
+            if(!File.Exists("players/playerLeft_name.txt")) File.Create("players/playerLeft_name.txt").Close(); 
+            if(!File.Exists("players/playerLeft_deck.txt")) File.Create("players/playerLeft_deck.txt").Close();
+            if(!File.Exists("players/playerLeft_score.txt")) File.Create("players/playerLeft_score.txt").Close();
+            if(!File.Exists("players/playerLeft_lpoints.txt")) File.Create("players/playerLeft_lpoints.txt").Close();
+            if(!File.Exists("players/playerRight_name.txt")) File.Create("players/playerRight_name.txt").Close();
+            if(!File.Exists("players/playerRight_deck.txt")) File.Create("players/playerRight_deck.txt").Close();
+            if(!File.Exists("players/playerRight_score.txt")) File.Create("players/playerRight_score.txt").Close();
+            if(!File.Exists("players/playerRight_lpoints.txt")) File.Create("players/playerRight_lpoints.txt").Close();
         }
 
     }

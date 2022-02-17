@@ -1,8 +1,10 @@
 <template>
   <v-container fluid>
-    <div class="d-flex flex-row">
-    <h2 style="margin-right:10px;">Active images</h2>
-    <v-btn @click="addActiveImage()" style="width:36px;min-width:36px;"><v-icon>mdi-plus-circle-outline</v-icon></v-btn>
+    <div class="title_container">
+      <v-row>
+        <h2 style="margin-right:10px;">Active images</h2>
+        <v-btn @click="addActiveImage()" style="width:36px;min-width:36px;"><v-icon>mdi-plus-circle-outline</v-icon></v-btn>
+      </v-row>
     </div>
     <v-row>
       <v-card
@@ -25,8 +27,14 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-      
-    </v-row>
+      </v-row>
+      <div class="title_container" style="margin-top:24px;">
+      <v-row>
+        <h2 style="margin:1px 10px 1px 0px;">Active images</h2>
+        <v-btn v-if="showLocalFolder" @click="openImageFolder()" style="width:36px;min-width:36px;"><v-icon>mdi-folder-open</v-icon></v-btn>
+      </v-row>
+    </div>
+    
     <v-row>
       <v-tabs v-model="tab">
         <v-tab v-for="imageSet in imageSets" v-bind:key="imageSet.name">
@@ -75,6 +83,7 @@ export default Vue.extend({
       imageSets: [],
       activeImages: ['empty.png'],
       index: 1 as number,
+      showLocalFolder: false,
     };
   },
   methods: {
@@ -144,8 +153,25 @@ export default Vue.extend({
         `${window.location.hostname}${port}/live/image/${n}`,
       );
     },
+    openImageFolder() {
+      try {
+        axios.post('api/Cards/openImageFolder');
+      } catch (e) {
+        this.showError = true;
+        this.errorMessage = `Error while opening local image folder ${e.message}.`;
+      }
+    },
+    isLocal()
+    {
+      console.log(location.host);
+      if (location.host.includes('localhost')) 
+      {
+        this.showLocalFolder = true;
+      }
+    }
   },
   async created() {
+    this.isLocal();
     await this.fetchImages();
     await this.fetchActiveImages();
   },
@@ -165,6 +191,10 @@ export default Vue.extend({
   width: 200px;
   margin: 10px;
   position: relative;
+}
+.title_container {
+  //padding: 12px;
+  margin: 12px;
 }
 .card_image {
   max-height: 100%;

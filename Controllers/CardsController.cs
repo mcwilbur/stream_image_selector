@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -83,6 +84,25 @@ namespace TCGStreamHelper.Controllers
             System.Threading.Thread.Sleep(200);
             System.IO.File.Copy(sourcePath, destinationPath);
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("openImageFolder")]
+        public ActionResult OpenImageFolder()
+        {
+            try {
+                new Process{
+                    StartInfo = new ProcessStartInfo(Path.GetFullPath($"wwwroot{Path.DirectorySeparatorChar}cards"))
+                    {
+                        UseShellExecute = true
+                    }}.Start();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning($"Unable to open local folder \n{e}");
+                return Problem();
+            }
         }
 
 

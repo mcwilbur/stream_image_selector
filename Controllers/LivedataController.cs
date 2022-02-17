@@ -9,10 +9,10 @@ namespace TCGStreamHelper.Controllers
     [Controller]
     public class LivedataController : Controller
     {       
-        private readonly ILogger<CardsController> _logger;
+        private readonly ILogger<LivedataController> _logger;
         private readonly LiveDataService _liveDataService;
 
-        public LivedataController(ILogger<CardsController> logger, LiveDataService liveDataService)
+        public LivedataController(ILogger<LivedataController> logger, LiveDataService liveDataService)
         {
             _logger = logger;
             _liveDataService = liveDataService;
