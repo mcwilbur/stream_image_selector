@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using TCGStreamHelper.Models;
 using TCGStreamHelper.Services;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace TCGStreamHelper.Controllers
 {
@@ -39,15 +41,30 @@ namespace TCGStreamHelper.Controllers
 
             foreach (string file in Directory.GetFiles($"wwwroot{Path.DirectorySeparatorChar}cards"))
             {
-               imageSet.images.Add($"cards{Path.DirectorySeparatorChar}{Path.GetFileName(file)}");
+               imageSet.images.Add($"/cards/{Path.GetFileName(file)}");
             } 
 
-            imageSets.Add(imageSet);               
+            imageSets.Add(imageSet);      
+
+            //downloads directory as second set
+            imageSet = new ImageSetVM()
+            {
+                name = "Downloads",
+                images = new List<string>()
+            };
+
+            foreach (string file in Directory.GetFiles($"wwwroot{Path.DirectorySeparatorChar}cards{Path.DirectorySeparatorChar}downloads"))
+            {
+               imageSet.images.Add($"/cards/downloads/{Path.GetFileName(file)}");
+            } 
+
+            imageSets.Add(imageSet);           
 
             //subdirectories
             foreach(string directory in Directory.GetDirectories($"wwwroot{Path.DirectorySeparatorChar}cards"))
             {
                 string directoryName = Path.GetFileName(directory);
+                if (directoryName.Equals("downloads")) continue; //skip downloads folder
                 imageSet = new ImageSetVM()
                 {
                     name = directoryName,
@@ -56,7 +73,7 @@ namespace TCGStreamHelper.Controllers
                 
                 foreach (string file in Directory.GetFiles(directory))
                 {
-                    imageSet.images.Add($"cards{Path.DirectorySeparatorChar}{directoryName}{Path.DirectorySeparatorChar}{Path.GetFileName(file)}");
+                    imageSet.images.Add($"/cards/{directoryName}/{Path.GetFileName(file)}");
                 } 
 
                 imageSets.Add(imageSet);
@@ -73,16 +90,74 @@ namespace TCGStreamHelper.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post(ImageVM image)
+        public async Task<ActionResult> Post(ImageVM image)
         {
             _liveDataService.SetImage(image);
             _logger.LogInformation(image.filename);
+            string destinationPath = $"activeImage{Path.DirectorySeparatorChar}current{image.index}";
+            string destinationFile;
+            //delete previous active file
             Directory.EnumerateFiles($"activeImage{Path.DirectorySeparatorChar}").ToList().Where(f => f.Contains($"current{image.index}")).ToList().ForEach(f => System.IO.File.Delete(f));
-            string sourcePath = $"wwwroot{Path.DirectorySeparatorChar}{image.filename}";
-            string destinationPath = $"activeImage{Path.DirectorySeparatorChar}current{image.index}{Path.GetExtension(sourcePath)}";
-            //set file active
             System.Threading.Thread.Sleep(200);
-            System.IO.File.Copy(sourcePath, destinationPath);
+            //check if local file
+            if(image.filename.StartsWith('/'))
+            {
+                string sourcePath = $"wwwroot{image.filename.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar)}";
+                destinationFile = $"{destinationPath}{Path.GetExtension(sourcePath)}";
+                //set file active                
+                System.IO.File.Copy(sourcePath, destinationFile);
+            }
+            else
+            {
+                Uri uri = new Uri(image.filename);
+                using var httpClient = new HttpClient();
+
+                // Get the file extension
+                var uriWithoutQuery = uri.GetLeftPart(UriPartial.Path);
+                var fileExtension = Path.GetExtension(uriWithoutQuery);
+
+                // Create file path and ensure directory exists
+                destinationFile = $"{destinationPath}{fileExtension}";
+
+                // Download the image and write to the file
+                var imageBytes = await httpClient.GetByteArrayAsync(uri);
+                await System.IO.File.WriteAllBytesAsync(destinationFile, imageBytes);
+            }            
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("download")]
+        public async Task<ActionResult> Download(ImageVM image)
+        {
+            try{
+                string destinationFolder = $"wwwroot{Path.DirectorySeparatorChar}cards{Path.DirectorySeparatorChar}downloads";
+                string destinationFile;
+                Uri uri = new Uri(image.filename);
+                using var httpClient = new HttpClient();
+
+                // Get the file extension
+                var uriWithoutQuery = uri.GetLeftPart(UriPartial.Path);
+                var fileExtension = Path.GetExtension(uriWithoutQuery);
+                
+                //string imageName = Regex.Match(uriWithoutQuery, @"^.*\/(.*)\..*$").Groups[1].Value ;
+                string imageName = uriWithoutQuery.Split('/').LastOrDefault();
+                if (fileExtension == null || fileExtension == string.Empty) {
+                    fileExtension = ".png";
+                    imageName = $"{imageName}{fileExtension}";
+                }
+
+                // Create file path and ensure directory exists
+                destinationFile = $"{destinationFolder}{Path.DirectorySeparatorChar}{imageName}";
+
+                // Download the image and write to the file
+                var imageBytes = await httpClient.GetByteArrayAsync(uri);
+                await System.IO.File.WriteAllBytesAsync(destinationFile, imageBytes);
+            }
+            catch(Exception e)
+            {
+                return Problem(detail: e.ToString());
+            }
             return Ok();
         }
 

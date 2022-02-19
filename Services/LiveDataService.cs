@@ -85,6 +85,7 @@ namespace TCGStreamHelper.Services
             if (!Directory.Exists("activeImage")) Directory.CreateDirectory("activeImage");
             if (!Directory.Exists("wwwroot")) Directory.CreateDirectory("wwwroot");
             if (!Directory.Exists("wwwroot/cards")) Directory.CreateDirectory("wwwroot/cards");
+            if (!Directory.Exists("wwwroot/cards/downloads")) Directory.CreateDirectory("wwwroot/cards/downloads");
             if (!Directory.Exists("players")) Directory.CreateDirectory("players");
 
             if(!File.Exists("players/playerLeft_name.txt")) File.Create("players/playerLeft_name.txt").Close(); 

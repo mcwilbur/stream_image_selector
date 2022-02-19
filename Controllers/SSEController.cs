@@ -36,7 +36,7 @@ namespace TCGStreamHelper.Controllers
             for(var i = 0; true ; i = (i+1)%100)
             {
                 
-                string imageName = "empty.png";
+                string imageName = "/empty.png";
                 ImageVM image = _livedata.GetImages().Find(i => i.index == index);
                 if (image != null) imageName = image.filename;
                 if(!imageName.Equals(previousName))

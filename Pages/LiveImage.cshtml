@@ -34,7 +34,7 @@
 
         source.onmessage = function (event) {
             console.log('onmessage: ' + event.data);
-            document.getElementById("myImg").src = "/"+event.data;
+            document.getElementById("myImg").src = event.data;
         };
 
         source.onopen = function(event) {
